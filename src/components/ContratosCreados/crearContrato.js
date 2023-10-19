@@ -56,17 +56,19 @@ function CrearContrato() {
               <CCardTitle>Datos del empleado</CCardTitle>
               <CForm onSubmit={enviarDatos}>
               <CRow>
-                <CCol sm="12" md="6">
+                <CCol>
                   <CFormInput
                     type="text"
+                    label="Nombre"
                     name="nombre"
                     onChange={cambioValor}
                     value={nombre}
                     placeholder="Ingresa el nombre"
                   />
                 </CCol>
-                <CCol sm="12" md="6">
+                <CCol>
                   <CFormInput
+                    label="Correo"
                     type="email"
                     name="correo"
                     onChange={cambioValor}

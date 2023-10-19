@@ -1,46 +1,51 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
+  cilClipboard,
   cilDescription,
   cilDrop,
+  cilPlaylistAdd,
+  cilPlus,
   cilPuzzle,
+  cilUser,
+  cilUserPlus,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const sidebarnav = [
   {
     component: CNavTitle,
-    name: 'Theme',
-  },
-  {
-    component: CNavItem,
-    name: 'Colors',
-    to: '/theme/colors',
-    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-      text: 'NEW',
-    }
+    name: 'Contenido',
   },
   {
     component: CNavGroup,
-    name: 'Base',
+    name: 'Contratos',
     to: '/base',
-    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Accordion',
-        to: '/base/accordion',
+        name: 'Crear Contrato',
+        icon: <CIcon icon={cilPlus} customClassName="nav-icon" />,
+        to: '/crearContrato',
       }
     ],
   },
   {
-    component: CNavItem,
-    name: 'Docs',
-    href: 'https://coreui.io/react/docs/templates/installation/',
-    icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
+    component: CNavGroup,
+    name: 'Usuarios',
+    to: '/base',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Crear Usuario',
+        icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
+        to: '/crearContrato',
+      }
+    ],
   },
+
 ]
 
 export default sidebarnav

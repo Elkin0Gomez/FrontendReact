@@ -51,13 +51,6 @@ class ListaContratos extends React.Component {
           <CCol>
             <h3 className="text-center">CONTRATOS CREADOS</h3>
             <div className='d-flex justify-content-center m-3'>
-              <div className='d-grid mx-auto'>
-                <Link to={"/crearContrato"}>
-                  <CButton color="dark">
-                    <i className="fas fa-circle-plus"></i> Crear Contrato
-                  </CButton>
-                </Link>
-              </div>
             </div>
             <div className="table-responsive">
               <CTable bordered className="m-3">
