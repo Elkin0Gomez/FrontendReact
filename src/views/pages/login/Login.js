@@ -24,15 +24,15 @@ const Login = () => {
           <CCol md={8}>
             <CCardGroup>
               <CCard className="p-4">
-                <CCardBody>
+                <CCardBody className="d-flex flex-column align-items-center">
                   <CForm>
                     <h1>Iniciar Sesión</h1>
-                    <p className="text-medium-emphasis">Iniciar sesion en </p>
+                    <p className="text-medium-emphasis">Digita tus datos</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput placeholder="Usuario" autoComplete="username" />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -40,38 +40,39 @@ const Login = () => {
                       </CInputGroupText>
                       <CFormInput
                         type="password"
-                        placeholder="Password"
+                        placeholder="Contraseña"
                         autoComplete="current-password"
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4">
-                          Login
+                          Ingresar
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
                         <CButton color="link" className="px-0">
-                          Forgot password?
+                          ¿se le olvido la contraseña perro?
                         </CButton>
                       </CCol>
                     </CRow>
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
+              <CCard className="text-white bg-danger py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
-                  <div>
-                    <h2>Sign up</h2>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                      tempor incididunt ut labore et dolore magna aliqua.
-                    </p>
-                    <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
-                        Register Now!
-                      </CButton>
-                    </Link>
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    overflow: 'hidden',
+                  }}>
+                    <img 
+                      src='https://www.fesc.edu.co/portal/images/inicio/pre-inscr%C3%ADbete_FESC.gif' 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    ></img>
                   </div>
                 </CCardBody>
               </CCard>

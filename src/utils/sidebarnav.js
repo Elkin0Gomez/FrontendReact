@@ -20,7 +20,7 @@ const sidebarnav = [
   {
     component: CNavGroup,
     name: 'Contratos',
-    to: '/base',
+    to: '/',
     icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
     items: [
       {

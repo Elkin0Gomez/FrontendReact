@@ -7,10 +7,10 @@ const Register= React.lazy(()=> import('../views/pages/register/Register'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home'},
-  { path: '/listacontratos', name: 'ListaContratos', element: ListaContratos },
+  { path: '/listacontratos', name: 'Lista de Contratos', element: ListaContratos },
   { path: '/crearcontrato', name: 'Crear Contrato', element: crearContrato },
-  { path: '/editarContrato/:id', name: 'EditarContrato', element: EditarContrato },
-  { path: '/register', name: 'EditarContrato', element: Register },
+  { path: '/editarContrato/:id', name: 'Editar Contrato', element: EditarContrato },
+  { path: '/register', name: 'Registrar usuario', element: Register },
 
 ]
 

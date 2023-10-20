@@ -19,8 +19,7 @@ const AppSidebar = () => {
       visible={sidebarShow}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
-        <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
+        <img src='https://www.fesc.edu.co/portal/images/logo.png'></img>
       </CSidebarBrand>
       <CSidebarNav>
           <AppSidebarNav items={items} />

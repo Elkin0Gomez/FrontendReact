@@ -6,8 +6,8 @@ import { Provider } from 'react-redux'
 import {store} from '../states/store'
 
 const DefaultLayout = React.lazy(() => import('../layout/DefaultLayout'))
-const login = React.lazy(() => import('../views/pages/login/Login'))
-const page404 = React.lazy(() => import('../views/pages/page404/Page404'))
+const Login = React.lazy(() => import('../views/pages/login/Login'))
+const Page404 = React.lazy(() => import('../views/pages/page404/Page404'))
 
 const loading = (
   <div className="pt-3 text-center">
@@ -22,8 +22,8 @@ function App() {
         <Suspense fallback={loading}>
           <Routes>
             <Route path="*" name="Home" element={<DefaultLayout />} />
-            <Route path="/login" name="Home" element={<DefaultLayout />} />
-            <Route path="/404" name="Home" element={<DefaultLayout />} />
+            <Route path="/login" name="Home" element={<Login />} />
+            <Route path="/404" name="Home" element={<Page404 />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
