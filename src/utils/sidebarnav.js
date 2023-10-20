@@ -41,7 +41,7 @@ const sidebarnav = [
         component: CNavItem,
         name: 'Crear Usuario',
         icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
-        to: '/crearContrato',
+        to: '/register',
       }
     ],
   },

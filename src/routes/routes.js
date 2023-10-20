@@ -1,7 +1,7 @@
 import React from 'react'
-const ListaContratos= React.lazy(()=> import('../components/PartidosCreados/ListaContratos'))
-const crearContrato= React.lazy(()=> import('../components/PartidosCreados/crearContrato'))
-const EditarContrato= React.lazy(()=> import('../components/PartidosCreados/EditarContrato'))
+const ListaContratos= React.lazy(()=> import('../components/ContratosCreados/ListaContratos'))
+const crearContrato= React.lazy(()=> import('../components/ContratosCreados/crearContrato'))
+const EditarContrato= React.lazy(()=> import('../components/ContratosCreados/EditarContrato'))
 const Register= React.lazy(()=> import('../views/pages/register/Register'))
 
 
