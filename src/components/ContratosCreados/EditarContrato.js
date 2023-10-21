@@ -1,18 +1,48 @@
 import { render } from '@testing-library/react';
+import Swal from 'sweetalert2';
 import React, { useState, useEffect } from 'react';
 import {  CContainer,  CRow,  CCol,  CCard,  CCardBody,  CForm,  CFormInput,  CButton,} from '@coreui/react';
 import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate  } from 'react-router-dom';
 
 function EditarContrato() {
   const { id } = useParams();
   const [datosCargados, setDatosCargados] = useState(false);
   const [empleado, setEmpleado] = useState({ nombre: '', correo: '' });
+  const navegate = useNavigate();
 
-  const actualizarDatos=(e)=>{
+  const actualizarDatos = (e) => {
     e.preventDefault();
     console.log('formulario enviado...');
   }
+
+  const eliminarRegistro = (id) => {
+    Swal.fire({
+      icon: 'warning',
+      title: '¿Estás seguro?',
+      text: 'Esta acción eliminará el registro. ¿Deseas continuar?',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+       
+        fetch('http://localhost/empleados/?borrar=' + id)
+          .then((respuesta) => respuesta.json())
+          .then((datosRespuesta) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Registro eliminado',
+              text: 'El registro ha sido eliminado exitosamente.',
+            }).then(() => {
+              window.location.href = '/';
+            });
+          })
+          .catch(console.log);
+      }
+    });
+  };
+  
 
   useEffect(() => {
     fetch(`http://localhost/empleados/?consultar=${id}`)
@@ -116,15 +146,28 @@ function EditarContrato() {
                   </CCol>
                 </CRow>
                 <CRow className="text-center">
-                  <CCol md="6">
+                  <CCol md="4">
                     <CButton color="primary" className="mt-3" type="submit" block>
                       <i className="fas fa-edit"></i> Editar Contrato
                     </CButton>
                   </CCol>
-                  <CCol md="6">
+                  <CCol md="4">
                     <Link to="/">
-                      <CButton color="danger" className="mt-3" type="button" block>
-                        <i className="fas fa-ban"></i> Cancelar
+                      <CButton color="secondary" className="mt-3" type="button" block>
+                        <i className="fas fa-ban"></i> Volver
+                      </CButton>
+                    </Link>
+                  </CCol>
+                  <CCol md="4">
+                    <Link to="/">
+                      <CButton 
+                        color="danger" 
+                        className="mt-3" 
+                        type="button" 
+                        block
+                        onClick={() => eliminarRegistro(empleado.id)}
+                      >
+                        <i className="fas fa-ban"></i> Eliminar
                       </CButton>
                     </Link>
                   </CCol>

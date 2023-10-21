@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import {store} from '../states/store'
 
+
 const DefaultLayout = React.lazy(() => import('../layout/DefaultLayout'))
 const Login = React.lazy(() => import('../views/pages/login/Login'))
 const Page404 = React.lazy(() => import('../views/pages/page404/Page404'))

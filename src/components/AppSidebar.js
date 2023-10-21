@@ -18,12 +18,8 @@ const AppSidebar = () => {
       position="fixed"
       visible={sidebarShow}
     >
-      <CSidebarBrand className="d-none d-md-flex" to="/">
-        <img src='https://www.fesc.edu.co/portal/images/logo.png'></img>
-      </CSidebarBrand>
-      <CSidebarNav>
-          <AppSidebarNav items={items} />
-      </CSidebarNav>
+
+
     </CSidebar>
   )
 }

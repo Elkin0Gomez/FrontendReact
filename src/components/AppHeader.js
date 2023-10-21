@@ -22,6 +22,7 @@ import { sidebarShowReducer } from '../states/sliceReducers'
 const AppHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
+  const logoUrl = 'https://www.fesc.edu.co/portal/tu-logotipo.jpg';
 
   return (
     <CHeader position="sticky" className="mb-4">
