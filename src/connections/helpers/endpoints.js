@@ -1,6 +1,8 @@
-const API_URL="http://localhost:8080"
+import axios from "axios";
 
-export const SIGNUP_POST_ENDPOINT= API_URL+"/usuario";
+const API_URL="http://localhost:4000/api"
+
+export const registerRequest = user => axios.post(`${API_URL}/register`, user)
 export const SIGIN_POST_ENDPOINT= API_URL+"/usuario/login"
 export const MISPARTIDOS_GET_ENDPOINT= API_URL+"/usuario/mispartidos";
 export const CREARPARTIDO_POST_ENDPOINT= API_URL+"/partido";

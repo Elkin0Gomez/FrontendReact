@@ -78,7 +78,9 @@ function CrearContrato() {
                   <CFormInput
                     label="Documento"
                     type="text"
-                    name="documento"
+                    name="correo"
+                    onChange={cambioValor}
+                    value={correo}
                     placeholder="Ingresa el documento"
                   />
                 </CCol>

@@ -4,11 +4,13 @@ import React, {Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import {store} from '../states/store'
+import { AuthProvider } from '../context/AuthContext.js';
 
 
 const DefaultLayout = React.lazy(() => import('../layout/DefaultLayout'))
 const Login = React.lazy(() => import('../views/pages/login/Login'))
 const Page404 = React.lazy(() => import('../views/pages/page404/Page404'))
+const Registrer = React.lazy(() => import('../views/pages/register/Register'))
 
 const loading = (
   <div className="pt-3 text-center">
@@ -18,17 +20,22 @@ const loading = (
 
 function App() {
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Suspense fallback={loading}>
-          <Routes>
-            <Route path="*" name="Home" element={<DefaultLayout />} />
-            <Route path="/login" name="Home" element={<Login />} />
-            <Route path="/404" name="Home" element={<Page404 />} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-    </Provider>
+  
+      <Provider store={store}>
+      <AuthProvider>
+        <BrowserRouter>
+          <Suspense fallback={loading}>
+            <Routes>
+              <Route path="*" name="Home" element={<DefaultLayout />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/registrar" element={<Registrer />} />
+              <Route path="/404" element={<Page404 />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+        </AuthProvider>
+      </Provider>
+
   );
 }
 

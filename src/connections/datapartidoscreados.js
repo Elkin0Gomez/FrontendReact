@@ -1,74 +1,16 @@
 
 const datapartidoscreados = [
-    {
-      idPartido: "1",
-      fecha: "2023-10-11T09:51:29.165+00:00",
-      golesLocal: "0",
-      golesVisitante: "0",
-      creado: "2023-10-11T09:51:29.165+00:00",
-      jugado: false,
-      usuarioEntity:{
-        idUsuario: 1,
-        nombre: "Rodolfo",
-        email: "doc-r-ortega@fesc.edu.co",
-        username: "rortega",
-        partidoDataRestModelList: null
-      },
-      equipoEntityLocal:{
-        id: 1,
-        nombre: "Cucuta"
-      },
-      equipoEntityVisitante:{
-        id: 2,
-        nombre: "Bogota"
-      }
-    },
-    {
-      idPartido: "2",
-      fecha: "2023-10-11T09:51:29.165+00:00",
-      golesLocal: "0",
-      golesVisitante: "0",
-      creado: "2023-10-11T09:51:29.165+00:00",
-      jugado: false,
-      usuarioEntity:{
-        idUsuario: 1,
-        nombre: "Rodolfo",
-        email: "doc-r-ortega@fesc.edu.co",
-        username: "rortega",
-        partidoDataRestModelList: null
-      },
-      equipoEntityLocal:{
-        id: 1,
-        nombre: "Cucuta"
-      },
-      equipoEntityVisitante:{
-        id: 2,
-        nombre: "Bogota"
-      }
-    },
-    {
-      idPartido: "3",
-      fecha: "2023-10-11T09:51:29.165+00:00",
-      golesLocal: "0",
-      golesVisitante: "0",
-      creado: "2023-10-11T09:51:29.165+00:00",
-      jugado: false,
-      usuarioEntity:{
-        idUsuario: 1,
-        nombre: "Rodolfo",
-        email: "doc-r-ortega@fesc.edu.co",
-        username: "rortega",
-        partidoDataRestModelList: null
-      },
-      equipoEntityLocal:{
-        id: 1,
-        nombre: "Cucuta"
-      },
-      equipoEntityVisitante:{
-        id: 2,
-        nombre: "Bogota"
-      }
-    },
+  {
+    "nombre": "Nombre del empleado",
+    "apellido": "Apellido del empleado",
+    "documento": "Número de documento",
+    "fecha_expedicion": "Fecha de expedición del documento",
+    "cargo": "Cargo del empleado",
+    "sueldo": 50000,  
+    "fecha_inicio": "2023-10-01",  
+    "fecha_fin": "2023-12-31" 
+  }
+  
   ];
   
   export default datapartidoscreados;

@@ -15,8 +15,27 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import {useForm} from 'react-hook-form'
 
 const Login = () => {
+
+  const {register, handleSubmit, formState: {errors}} = useForm();
+
+  const onSubmit = handleSubmit(data => {
+    console.log(data)
+
+  })
+
+  const linkStyle = {
+    color: 'red', 
+  }
+  const registerStyle = {
+    background: 'red',
+    color: 'white', 
+    paddingTop: '2px'
+  }
+
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -25,43 +44,43 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody className="d-flex flex-column align-items-center">
-                  <CForm>
-                    <h1>Iniciar Sesión</h1>
-                    <p className="text-medium-emphasis">Digita tus datos</p>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilUser} />
-                      </CInputGroupText>
-                      <CFormInput placeholder="Usuario" autoComplete="username" />
-                    </CInputGroup>
-                    <CInputGroup className="mb-4">
-                      <CInputGroupText>
-                        <CIcon icon={cilLockLocked} />
-                      </CInputGroupText>
-                      <CFormInput
-                        type="password"
-                        placeholder="Contraseña"
-                        autoComplete="current-password"
-                      />
-                    </CInputGroup>
-                    <CRow>
-                      <CCol xs={6}>
-                      <Link to="/">
-                        <CButton color="primary" className="px-4">
-                          Ingresar
-                        </CButton>
-                      </Link>                       
-                      </CCol>
-                      <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
-                          ¿se le olvido la contraseña perro?
-                        </CButton>
-                      </CCol>
-                    </CRow>
-                  </CForm>
+                <CForm
+                onSubmit={onSubmit}
+              >
+                <h1 className="m-4">Iniciar sesion</h1>
+                <div className="mb-3">
+                  <CInputGroup>
+                    <CInputGroupText>@</CInputGroupText>
+                    <CFormInput
+                      type="email"
+                      placeholder="Correo"
+                      {...register("email", { required: true })}
+                    />
+                  </CInputGroup>
+                  {errors.email && <p style={linkStyle}>El correo es requerido</p>}
+                </div>
+                <div className="mb-3">
+                  <CInputGroup>
+                    <CInputGroupText>
+                      <CIcon icon={cilLockLocked} />
+                    </CInputGroupText>
+                    <CFormInput
+                      type="password"
+                      placeholder="Contraseña"
+                      {...register("password", { required: true })}
+                    />
+                  </CInputGroup>
+                  {errors.password && <p style={linkStyle}>La contraseña es requerida</p>}
+                </div>         
+                <div className="d-grid">
+                  <CButton type="submit" color="success">
+                    Ingresar
+                  </CButton>
+                </div>
+              </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-danger py-5" style={{ width: '44%' }}>
+              <CCard className="text-white bg-danger py-5 d-none d-md-block" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div style={{
                     position: 'absolute',
