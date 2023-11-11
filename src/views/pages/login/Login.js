@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   CButton,
   CCard,
@@ -12,29 +12,35 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
-import {useForm} from 'react-hook-form'
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { cilLockLocked, cilUser } from "@coreui/icons";
+import { useForm } from "react-hook-form";
+import { useAuth } from "../../../context/AuthContext";
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const {register, handleSubmit, formState: {errors}} = useForm();
+  const {signin, errors: signinErrors} = useAuth();
 
-  const onSubmit = handleSubmit(data => {
-    console.log(data)
-
-  })
+  const onSubmit = handleSubmit((data) => {
+    signin(data);
+  });
 
   const linkStyle = {
-    color: 'red', 
-  }
+    color: "red",
+  };
   const registerStyle = {
-    background: 'red',
-    color: 'white', 
-    paddingTop: '2px'
-  }
-
+    background: "red",
+    color: "white",
+    paddingTop: "2px",
+    textAlign: "center",
+    margin: "2px",
+  };
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
@@ -44,55 +50,76 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody className="d-flex flex-column align-items-center">
-                <CForm
-                onSubmit={onSubmit}
-              >
-                <h1 className="m-4">Iniciar sesion</h1>
-                <div className="mb-3">
-                  <CInputGroup>
-                    <CInputGroupText>@</CInputGroupText>
-                    <CFormInput
-                      type="email"
-                      placeholder="Correo"
-                      {...register("email", { required: true })}
-                    />
-                  </CInputGroup>
-                  {errors.email && <p style={linkStyle}>El correo es requerido</p>}
-                </div>
-                <div className="mb-3">
-                  <CInputGroup>
-                    <CInputGroupText>
-                      <CIcon icon={cilLockLocked} />
-                    </CInputGroupText>
-                    <CFormInput
-                      type="password"
-                      placeholder="Contraseña"
-                      {...register("password", { required: true })}
-                    />
-                  </CInputGroup>
-                  {errors.password && <p style={linkStyle}>La contraseña es requerida</p>}
-                </div>         
-                <div className="d-grid">
-                  <CButton type="submit" color="success">
-                    Ingresar
-                  </CButton>
-                </div>
-              </CForm>
+                  <CForm onSubmit={onSubmit}>
+                    <h1 className="m-4">Iniciar sesion</h1>
+                    {
+                      signinErrors.map((error, i) =>(
+                        <div style={registerStyle} key={i}>
+                          {error}
+                        </div>
+                      ))
+                    }
+                    <div className="mb-3">
+                      <CInputGroup>
+                        <CInputGroupText>@</CInputGroupText>
+                        <CFormInput
+                          type="email"
+                          placeholder="Correo"
+                          {...register("email", { required: true })}
+                        />
+                      </CInputGroup>
+                      {errors.email && (
+                        <p style={linkStyle}>El correo es requerido</p>
+                      )}
+                    </div>
+                    <div className="mb-3">
+                      <CInputGroup>
+                        <CInputGroupText>
+                          <CIcon icon={cilLockLocked} />
+                        </CInputGroupText>
+                        <CFormInput
+                          type="password"
+                          placeholder="Contraseña"
+                          {...register("password", { required: true })}
+                        />
+                      </CInputGroup>
+                      {errors.password && (
+                        <p style={linkStyle}>La contraseña es requerida</p>
+                      )}
+                    </div>
+                    <p>
+                      ¿Aú no tienes cuenta? <Link to={`/registrar`}>Registrase</Link>
+                    </p>
+                    <div className="d-grid">
+                      <CButton type="submit" color="success">
+                        Ingresar
+                      </CButton>
+                    </div>
+                  </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-danger py-5 d-none d-md-block" style={{ width: '44%' }}>
+              <CCard
+                className="text-white bg-danger py-5 d-none d-md-block"
+                style={{ width: "44%" }}
+              >
                 <CCardBody className="text-center">
-                  <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    overflow: 'hidden',
-                  }}>
-                    <img 
-                      src='https://www.fesc.edu.co/portal/images/inicio/pre-inscr%C3%ADbete_FESC.gif' 
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <img
+                      src="https://www.fesc.edu.co/portal/images/inicio/pre-inscr%C3%ADbete_FESC.gif"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
                     ></img>
                   </div>
                 </CCardBody>
@@ -102,7 +129,7 @@ const Login = () => {
         </CRow>
       </CContainer>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

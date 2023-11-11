@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import {
   CButton,
   CCard,
@@ -99,6 +100,9 @@ const Register = () => {
                     </CInputGroup>
                     {errors.password && <p style={linkStyle}>La contraseña es requerida</p>}
                   </div>         
+                  <p>
+                      ¿Ya tienes una cuenta? <Link to={`/login`}>Ingresar</Link>
+                    </p>
                   <div className="d-grid">
                     <CButton type="submit" color="success">
                       Crear Usuario
