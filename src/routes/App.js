@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "../states/store";
 import { AuthProvider } from "../context/AuthContext.js";
+import { ContratosProvider } from "../context/ContratosContext.js";
 import ProtectedRoutes from "../ProtectedRoutes.js";
 
 const DefaultLayout = React.lazy(() => import("../layout/DefaultLayout"));
@@ -22,18 +23,20 @@ function App() {
   return (
     <Provider store={store}>
       <AuthProvider>
-        <BrowserRouter>
-          <Suspense fallback={loading}>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/registrar" element={<Registrer />} />
-              <Route path="/404" element={<Page404 />} />
-              <Route element={<ProtectedRoutes />}>
-                <Route path="*" name="Home" element={<DefaultLayout />} />
-              </Route>
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
+        <ContratosProvider>
+          <BrowserRouter>
+            <Suspense fallback={loading}>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/registrar" element={<Registrer />} />
+                <Route path="/404" element={<Page404 />} />
+                <Route element={<ProtectedRoutes />}>
+                  <Route path="*" name="Home" element={<DefaultLayout />} />
+                </Route>
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
+        </ContratosProvider>
       </AuthProvider>
     </Provider>
   );

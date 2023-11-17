@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   CContainer,
@@ -11,41 +11,18 @@ import {
   CFormInput,
   CButton,
 } from '@coreui/react';
+import { useForm } from "react-hook-form";
+import { useContratos } from '../../context/ContratosContext';
 
 function CrearContrato() {
-  const [nombre, setNombre] = useState('');
-  const [correo, setCorreo] = useState('');
+  const { register, handleSubmit } = useForm();
+  const { createContratos } = useContratos();
   const navigate = useNavigate();
 
-  const cambioValor = (e) => {
-    if (e.target.name === 'nombre') {
-      setNombre(e.target.value);
-    } else if (e.target.name === 'correo') {
-      setCorreo(e.target.value);
-    }
-  }
-
-  const enviarDatos = (e) => {
-    e.preventDefault();
-    console.log('formulario enviado...');
-
-    const datosEnviar = {
-      nombre: nombre,
-      correo: correo
-    };
-
-    fetch('http://localhost/empleados/?insertar=1', {
-      method: 'POST',
-      body: JSON.stringify(datosEnviar)
-    })
-    .then(respuesta => respuesta.json())
-    .then((datosRespuesta) => {
-      console.log(datosRespuesta);
-      navigate('/');
-    })
-    .catch(console.log);
-  }
-
+  const onSubmit = handleSubmit((data) =>{
+    createContratos(data);    
+    navigate('/listacontratos')
+  })
   return (
     <CContainer className="mt-3 mb-3">
     <CRow className="justify-content-center">
@@ -54,16 +31,17 @@ function CrearContrato() {
         <CCard className="mt-3">
           <CCardBody>
             <CCardTitle>Datos del empleado</CCardTitle>
-            <CForm onSubmit={enviarDatos}>
+            <CForm onSubmit={onSubmit}>
               <CRow>
                 <CCol md="6">
                   <CFormInput
                     type="text"
                     label="Nombres"
                     name="nombre"
-                    onChange={cambioValor}
-                    value={nombre}
                     placeholder="Ingresa el nombre"
+                    {...register('nombre')}
+                    autoFocus
+                    
                   />
                 </CCol>
                 <CCol md="6">
@@ -72,24 +50,25 @@ function CrearContrato() {
                     type="text"
                     name="apellido"
                     placeholder="Ingresa el apellido"
+                    {...register('apellido')}
                   />
                 </CCol>
                 <CCol md="6">
                   <CFormInput
                     label="Documento"
                     type="text"
-                    name="correo"
-                    onChange={cambioValor}
-                    value={correo}
+                    name="documento"
                     placeholder="Ingresa el documento"
+                    {...register('documento')}
                   />
                 </CCol>
                 <CCol md="6">
                   <CFormInput
                     label="Fecha de expedición"
                     type="date"
-                    name="fechaEx"
+                    name="fechafechaExpedicion"
                     placeholder="Ingresa la fecha de expedición"
+                    {...register('fechaExpedicion')}
                   />
                 </CCol>
                 <CCol md="6">
@@ -98,6 +77,7 @@ function CrearContrato() {
                     type="text"
                     name="cargo"
                     placeholder="Ingresa el cargo"
+                    {...register('cargo')}
                   />
                 </CCol>
                 <CCol md="6">
@@ -106,14 +86,16 @@ function CrearContrato() {
                     type="text"
                     name="sueldo"
                     placeholder="Ingresa el sueldo"
+                    {...register('sueldo')}
                   />
                 </CCol>
                 <CCol md="6">
                   <CFormInput
                     label="Fecha de Inicio"
                     type="date"
-                    name="fechaIni"
+                    name="fechaInicio"
                     placeholder="Ingresa la fecha de inicio"
+                    {...register('fechaInicio')}
                   />
                 </CCol>
                 <CCol md="6">
@@ -122,18 +104,19 @@ function CrearContrato() {
                     type="date"
                     name="fechaFin"
                     placeholder="Ingresa la fecha de fin"
+                    {...register('fechaFin')}
                   />
                 </CCol>
               </CRow>
                 <CRow className="text-center">
                 <CCol md="6">
-                  <CButton color="success" className="mt-3" type="submit" block>
+                  <CButton color="success" className="mt-3" type="submit" >
                     <i className="fas fa-plus"></i> Crear Contrato
                   </CButton>
                 </CCol>
                 <CCol md="6">
                   <Link to="/">
-                    <CButton color="danger" className="mt-3" type="button" block>
+                    <CButton color="danger" className="mt-3" type="button" >
                       <i className="fas fa-ban"></i> Cancelar
                     </CButton>
                   </Link>

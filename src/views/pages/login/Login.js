@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   CButton,
   CCard,
@@ -14,22 +14,28 @@ import {
   CRow,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { cilLockLocked, cilUser } from "@coreui/icons";
+import { cilLockLocked } from "@coreui/icons";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../../context/AuthContext";
+import { useEffect } from "react";
 
 const Login = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const {signin, errors: signinErrors} = useAuth();
+  const {signin, errors: signinErrors, isAuthenticated} = useAuth();
 
   const onSubmit = handleSubmit((data) => {
-    signin(data);
+    signin(data)
   });
+
+  useEffect(()=>{
+    if(isAuthenticated) navigate('/listacontratos')
+  }, [isAuthenticated])
 
   const linkStyle = {
     color: "red",

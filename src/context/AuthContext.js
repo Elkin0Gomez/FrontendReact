@@ -11,7 +11,7 @@ export const AuthContext = createContext();
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used with an AuthProvider");
+    throw new Error("useAuth debe usarse con un AuthProvider");
   }
   return context;
 };
@@ -57,6 +57,12 @@ export const AuthProvider = ({ children }) => {
     }
   }, [errors]);
 
+  const logout = () =>{
+    Cookies.remove('token');
+    setIsAuthenticated(false);
+    setUser(null);
+  }
+
   useEffect(() => {
     async function CheckLogin() {
       try {
@@ -93,6 +99,7 @@ export const AuthProvider = ({ children }) => {
         signup,
         signin,
         loading,
+        logout,
         user,
         isAuthenticated,
         errors,
