@@ -1,84 +1,103 @@
-import { render } from '@testing-library/react';
-import Swal from 'sweetalert2';
-import React, { useState, useEffect } from 'react';
-import {  CContainer,  CRow,  CCol,  CCard,  CCardBody,  CForm,  CFormInput,  CButton,} from '@coreui/react';
-import { useParams } from 'react-router-dom';
-import { Link, useNavigate  } from 'react-router-dom';
+import Swal from "sweetalert2";
+import React, { useEffect, useState } from "react";
+import {
+  CContainer,
+  CRow,
+  CCol,
+  CCard,
+  CCardBody,
+  CForm,
+  CFormInput,
+  CButton,
+} from "@coreui/react";
+import { useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContratos } from "../../context/ContratosContext";
+import { useForm } from "react-hook-form";
 
 function EditarContrato() {
-  const { id } = useParams();
-  const [datosCargados, setDatosCargados] = useState(false);
-  const [empleado, setEmpleado] = useState({ nombre: '', correo: '' });
-  const navegate = useNavigate();
+  const { register, handleSubmit, setValue } = useForm();
+  const { getContrato, deleteContrato, updateContrato, contratos } =
+    useContratos();
+  const navigate = useNavigate();
+  const [editing, setEditing] = useState(false);
 
-  const actualizarDatos = (e) => {
-    e.preventDefault();
-    console.log('formulario enviado...');
-  }
-
-  const eliminarRegistro = (id) => {
-    Swal.fire({
-      icon: 'warning',
-      title: '¿Estás seguro?',
-      text: 'Esta acción eliminará el registro. ¿Deseas continuar?',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-       
-        fetch('http://localhost/empleados/?borrar=' + id)
-          .then((respuesta) => respuesta.json())
-          .then((datosRespuesta) => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Registro eliminado',
-              text: 'El registro ha sido eliminado exitosamente.',
-            }).then(() => {
-              window.location.href = '/';
-            });
-          })
-          .catch(console.log);
-      }
-    });
-  };
-  
+  const params = useParams();
 
   useEffect(() => {
-    fetch(`http://localhost/empleados/?consultar=${id}`)
-      .then((respuesta) => respuesta.json())
-      .then((datosRespuesta) => {
-        console.log(datosRespuesta);
-        setDatosCargados(true);
-        setEmpleado(datosRespuesta[0] || {});
-      })
-      .catch(console.log);
-  }, [id]);
-  
-  if(!datosCargados){
-    return(
-      <div>
-        Cargando...
-      </div>
-    )
-  }else{
-    return (
-      <CContainer className="mt-3 mb-3">
+    async function loadContrato() {
+      if (params.id) {
+        const contrato = await getContrato(params.id);
+
+        const fechaExpedicion = new Date(contrato.fechaExpedicion)
+          .toISOString()
+          .split("T")[0];
+        const fechaInicio = new Date(contrato.fechaInicio)
+          .toISOString()
+          .split("T")[0];
+        const fechaFin = new Date(contrato.fechaFin)
+          .toISOString()
+          .split("T")[0];
+
+        setValue("nombre", contrato.nombre);
+        setValue("apellido", contrato.apellido);
+        setValue("documento", contrato.documento);
+        setValue("fechaExpedicion", fechaExpedicion);
+        setValue("cargo", contrato.cargo);
+        setValue("sueldo", contrato.sueldo);
+        setValue("fechaInicio", fechaInicio);
+        setValue("fechaFin", fechaFin);
+      }
+    }
+    loadContrato(contratos);
+  }, []);
+
+  const handleEdit = () => {
+    setEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setEditing(false);
+  };
+
+  const onSubmit = handleSubmit((data) => {
+    updateContrato(params.id, data);
+    navigate("/listacontratos");
+  });
+
+  const confirmarEliminarContrato = async () => {
+    const result = await Swal.fire({
+      icon: "warning",
+      title: "¿Estás seguro?",
+      text: "Esta acción eliminará el contrato. ¿Deseas continuar?",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (result.isConfirmed) {
+      await deleteContrato(params.id);
+      navigate("/listacontratos");
+    }
+  };
+
+  return (
+    <CContainer className="mt-3 mb-3">
       <CRow className="justify-content-center">
         <CCol sm="12" md="8" lg="6">
           <h3 className="text-center">EDITAR CONTRATO</h3>
           <CCard className="mt-3">
             <CCardBody>
               <h5 className="card-title">Datos del empleado</h5>
-              <CForm onSubmit={actualizarDatos}>
+              <CForm onSubmit={onSubmit}>
                 <CRow>
                   <CCol md="6">
                     <CFormInput
                       type="text"
                       label="Nombres"
                       placeholder="Ingresa el nombre"
-                      value={empleado.nombre}
-                      onChange={(e) => setEmpleado({ ...empleado, nombre: e.target.value })}
+                      {...register("nombre")}
+                      disabled={!editing}
                     />
                   </CCol>
                   <CCol md="6">
@@ -86,8 +105,8 @@ function EditarContrato() {
                       label="Apellidos"
                       type="text"
                       placeholder="Ingresa el apellido"
-                      value={empleado.apellido}
-                      onChange={(e) => setEmpleado({ ...empleado, apellido: e.target.value })}
+                      {...register("apellido")}
+                      disabled={!editing}
                     />
                   </CCol>
                   <CCol md="6">
@@ -95,8 +114,8 @@ function EditarContrato() {
                       label="Documento"
                       type="text"
                       placeholder="Ingresa el documento"
-                      value={empleado.documento}
-                      onChange={(e) => setEmpleado({ ...empleado, documento: e.target.value })}
+                      {...register("documento")}
+                      disabled={!editing}
                     />
                   </CCol>
                   <CCol md="6">
@@ -104,8 +123,8 @@ function EditarContrato() {
                       label="Fecha de expedición"
                       type="date"
                       placeholder="Ingresa la fecha de expedición"
-                      value={empleado.fechaEx}
-                      onChange={(e) => setEmpleado({ ...empleado, fechaEx: e.target.value })}
+                      {...register("fechaExpedicion")}
+                      disabled={!editing}
                     />
                   </CCol>
                   <CCol md="6">
@@ -113,8 +132,8 @@ function EditarContrato() {
                       label="Cargo"
                       type="text"
                       placeholder="Ingresa el cargo"
-                      value={empleado.cargo}
-                      onChange={(e) => setEmpleado({ ...empleado, cargo: e.target.value })}
+                      {...register("cargo")}
+                      disabled={!editing}
                     />
                   </CCol>
                   <CCol md="6">
@@ -122,8 +141,8 @@ function EditarContrato() {
                       label="Sueldo"
                       type="text"
                       placeholder="Ingresa el sueldo"
-                      value={empleado.sueldo}
-                      onChange={(e) => setEmpleado({ ...empleado, sueldo: e.target.value })}
+                      {...register("sueldo")}
+                      disabled={!editing}
                     />
                   </CCol>
                   <CCol md="6">
@@ -131,8 +150,8 @@ function EditarContrato() {
                       label="Fecha de Inicio"
                       type="date"
                       placeholder="Ingresa la fecha de inicio"
-                      value={empleado.fechaIni}
-                      onChange={(e) => setEmpleado({ ...empleado, fechaIni: e.target.value })}
+                      {...register("fechaInicio")}
+                      disabled={!editing}
                     />
                   </CCol>
                   <CCol md="6">
@@ -140,47 +159,55 @@ function EditarContrato() {
                       label="Fecha de Finalización"
                       type="date"
                       placeholder="Ingresa la fecha de fin"
-                      value={empleado.fechaFin}
-                      onChange={(e) => setEmpleado({ ...empleado, fechaFin: e.target.value })}
+                      {...register("fechaFin")}
+                      disabled={!editing}
                     />
                   </CCol>
                 </CRow>
-                <CRow className="text-center">
-                  <CCol md="4">
-                    <CButton color="primary" className="mt-3" type="submit" block>
-                      <i className="fas fa-edit"></i> Editar Contrato
+                <CRow className="justify-content-center">
+                {!editing ? (
+                  <CCol md="4" className= "">
+                    <CButton
+                      color="primary"
+                      className="mt-3 col-12"
+                      type="button"
+                      onClick={handleEdit}
+                    >
+                      <i className="fas fa-edit"></i> Editar
                     </CButton>
                   </CCol>
-                  <CCol md="4">
-                    <Link to="/">
-                      <CButton color="secondary" className="mt-3" type="button" block>
-                        <i className="fas fa-ban"></i> Volver
-                      </CButton>
-                    </Link>
-                  </CCol>
-                  <CCol md="4">
-                    <Link to="/">
-                      <CButton 
-                        color="danger" 
-                        className="mt-3" 
-                        type="button" 
-                        block
-                        onClick={() => eliminarRegistro(empleado.id)}
+                ) : (
+                  <>
+                    <CCol md="4">
+                      <CButton
+                        color="success"
+                        className="mt-3 col-12"
+                        type="submit"
                       >
-                        <i className="fas fa-ban"></i> Eliminar
+                        <i className="fas fa-check"></i> Actualizar
                       </CButton>
-                    </Link>
-                  </CCol>
-                </CRow>
+                    </CCol>
+                  </>
+                )}
+                <CCol md="4">
+                  <Link to="/">
+                    <CButton
+                      color="secondary"
+                      className="mt-3 col-12"
+                      type="button"
+                    >
+                      <i className="fas fa-ban"></i> Volver
+                    </CButton>
+                  </Link>
+                </CCol>
+              </CRow>
               </CForm>
             </CCardBody>
           </CCard>
         </CCol>
       </CRow>
     </CContainer>
-    
-    );
-  }
+  );
 }
 
 export default EditarContrato;

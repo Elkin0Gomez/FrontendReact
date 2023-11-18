@@ -7,6 +7,8 @@ import { store } from "../states/store";
 import { AuthProvider } from "../context/AuthContext.js";
 import { ContratosProvider } from "../context/ContratosContext.js";
 import ProtectedRoutes from "../ProtectedRoutes.js";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const DefaultLayout = React.lazy(() => import("../layout/DefaultLayout"));
 const Login = React.lazy(() => import("../views/pages/login/Login"));

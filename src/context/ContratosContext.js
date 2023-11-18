@@ -3,6 +3,9 @@ import {
   createContratoRequest,
   getContratosRequest,
   deleteContratosRequest,
+  getContratoRequest,
+  updateContratosRequest,
+
 } from "../connections/helpers/contratos.endpoints";
 
 const ContratosContext = createContext();
@@ -44,6 +47,25 @@ export function ContratosProvider({ children }) {
     }
   };
 
+  const getContrato = async (id) => {
+    try {
+      const res = await getContratoRequest(id);
+      return res.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateContrato = async (id, contrato) =>{
+    try {
+      const res = await updateContratosRequest(id, contrato)
+      if (res.status === "ok")
+      setContratos(contratos.filter((contrato) => contrato._id !== id));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <ContratosContext.Provider
       value={{
@@ -51,6 +73,8 @@ export function ContratosProvider({ children }) {
         createContratos,
         getContratos,
         deleteContrato,
+        getContrato,
+        updateContrato
       }}
     >
       {children}
