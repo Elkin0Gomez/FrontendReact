@@ -12,5 +12,4 @@ export const updateContratosRequest = (id, contrato) =>
 
 export const deleteContratosRequest = (id) => axios.delete(`/contrato/${id}`);
 
-export const generarDocumentoWordRequest = (id) =>
-  axios.get(`/generarDocumentoWord/${id}`, { responseType: 'blob' });
+export const generarDocumentoRequest = (id) => axios.get(`/generarDocumento/${id}`);

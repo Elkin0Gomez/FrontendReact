@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   CContainer,
@@ -27,6 +27,8 @@ function CrearContrato() {
     createContratos(data);
     navigate("/listacontratos");
   });
+
+
 
   return (
     <CContainer className="mt-3 mb-3">
@@ -68,8 +70,11 @@ function CrearContrato() {
                   <CCol md="6">
                     <CFormInput
                       label="Documento"
-                      type="text"
+                      type="number"
                       name="documento"
+                      pattern="/^[0-9.] +$/"
+                      onDrop="return false;"
+                      onpaste="return false;"
                       {...register("documento", {
                         required: "Este campo es requerido",
                       })}
@@ -107,8 +112,11 @@ function CrearContrato() {
                   <CCol md="6">
                     <CFormInput
                       label="Sueldo"
-                      type="text"
+                      type="number"
                       name="sueldo"
+                      pattern="/^[0-9.] +$/"
+                      onDrop="return false;"
+                      onpaste="return false;"
                       {...register("sueldo", {
                         required: "Este campo es requerido",
                       })}

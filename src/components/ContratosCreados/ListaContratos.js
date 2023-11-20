@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import * as XLSX from "xlsx";
 import { Link } from "react-router-dom";
-import { saveAs } from 'file-saver';
+import { ToastContainer, toast } from 'react-toastify';
 import {
   CContainer,
   CRow,
@@ -16,14 +16,13 @@ import {
   CTableHeaderCell,
   CTableBody,
   CTableDataCell,
-  
 } from "@coreui/react";
 import { Pagination } from "react-bootstrap";
 import { useContratos } from "../../context/ContratosContext";
-import { generarDocumentoWordRequest } from "../../connections/helpers/contratos.endpoints";
 
 function ListaContratos() {
-  const { getContratos, contratos, deleteContrato } = useContratos();
+  const { getContratos, contratos, deleteContrato, generarDocumento } =
+    useContratos();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
@@ -52,12 +51,14 @@ function ListaContratos() {
     }
   };
 
-  const filteredContratos = contratos?.filter(
-    (contrato) =>
-      contrato.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contrato.apellido.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contrato.documento.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredContratos = Array.isArray(contratos)
+  ? contratos.filter(
+      (contrato) =>
+        contrato.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contrato.apellido.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contrato.documento.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  : [];
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -65,9 +66,7 @@ function ListaContratos() {
     indexOfFirstItem,
     indexOfLastItem
   );
-  const totalPages = Math.ceil(
-    (filteredContratos?.length || 0) / itemsPerPage
-  );
+  const totalPages = Math.ceil((filteredContratos?.length || 0) / itemsPerPage);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -84,27 +83,11 @@ function ListaContratos() {
         FechaFin: contrato.fechaFin,
       };
     });
-  
+
     const ws = XLSX.utils.json_to_sheet(dataToExport);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Contratos");
     XLSX.writeFile(wb, "contratos.xlsx");
-  };
-
-  const downloadContrato = async (contratoId) => {
-    try {
-      // Utiliza la función del endpoint para obtener el documento Word
-      const response = await generarDocumentoWordRequest(contratoId);
-  
-      if (response.data) {
-        // Realiza la descarga utilizando la librería file-saver
-        saveAs(response.data, `contrato_${contratoId}.docx`);
-      } else {
-        console.error("Documento no encontrado.");
-      }
-    } catch (error) {
-      console.error("Error al obtener el documento:", error);
-    }
   };
 
   return (
@@ -129,14 +112,14 @@ function ListaContratos() {
             />
           </div>
           <div className="col-4 d-flex m-3">
-          <CButton
-          color="primary"
-          className="m-1"
-          type="button"
-          onClick={exportToExcel}
-          >
-          Exportar excel
-          </CButton>
+            <CButton
+              color="primary"
+              className="m-1"
+              type="button"
+              onClick={exportToExcel}
+            >
+              Exportar excel
+            </CButton>
           </div>
           <div className="table-responsive">
             <CTable bordered striped hover className="m-3">
@@ -163,9 +146,14 @@ function ListaContratos() {
                       <CTableDataCell>{contrato.apellido}</CTableDataCell>
                       <CTableDataCell>{contrato.documento}</CTableDataCell>
                       <CTableDataCell>
-                        <CButton color="primary" className="m-1" onClick={downloadContrato}>
+                        <CButton
+                          color="primary"
+                          className="m-1"
+                          onClick={() => generarDocumento(contrato._id)}
+                        >
                           <FontAwesomeIcon icon={faDownload} /> Descargar
                         </CButton>
+
                         <CButton
                           color="danger"
                           className="m-1"
@@ -189,17 +177,17 @@ function ListaContratos() {
           </div>
           {totalPages > 1 && (
             <div className="d-flex justify-content-center">
-            <Pagination>
-            {Array.from({ length: totalPages }).map((_, index) => (
-              <Pagination.Item
-                key={index + 1}
-                active={index + 1 === currentPage}
-                onClick={() => paginate(index + 1)}
-              >
-                {index + 1}
-              </Pagination.Item>
-            ))}
-          </Pagination>
+              <Pagination>
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <Pagination.Item
+                    key={index + 1}
+                    active={index + 1 === currentPage}
+                    onClick={() => paginate(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+              </Pagination>
             </div>
           )}
         </CCol>
@@ -209,6 +197,7 @@ function ListaContratos() {
           <nav aria-label="Page navigation"></nav>
         </CCol>
       </CRow>
+      <ToastContainer />
     </CContainer>
   );
 }

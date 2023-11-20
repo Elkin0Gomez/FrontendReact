@@ -1,10 +1,13 @@
 import { createContext, useContext, useState } from "react";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   createContratoRequest,
   getContratosRequest,
   deleteContratosRequest,
   getContratoRequest,
   updateContratosRequest,
+  generarDocumentoRequest
 
 } from "../connections/helpers/contratos.endpoints";
 
@@ -25,11 +28,12 @@ export function ContratosProvider({ children }) {
   const getContratos = async () => {
     try {
       const res = await getContratosRequest();
-      setContratos(res.data);
+      const contratosArray = Array.isArray(res.data) ? res.data : [];
+      setContratos(contratosArray);
     } catch (error) {
-      console.log(error);
+      console.error("Error al obtener contratos:", error);
     }
-  };
+  };  
 
   const createContratos = async (contrato) => {
     console.log("contrato");
@@ -40,7 +44,7 @@ export function ContratosProvider({ children }) {
   const deleteContrato = async (id) => {
     try {
       const res = await deleteContratosRequest(id);
-      if (res.status === 204)
+      if (res.status === "ok")
         setContratos(contratos.filter((contrato) => contrato._id !== id));
     } catch (error) {
       console.log(error);
@@ -66,6 +70,41 @@ export function ContratosProvider({ children }) {
     }
   }
 
+  const generarDocumento = async (id) => {
+    try {
+      const res = await generarDocumentoRequest(id);
+  
+      if (res.status === "ok") {
+
+        setContratos(contratos.filter((contrato) => contrato._id !== id));
+  
+      } else {
+        toast.success('Documento descargado correctamente', {
+          position: 'bottom-right',
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error('Error al descargar el documento', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+  
+  
+
   return (
     <ContratosContext.Provider
       value={{
@@ -74,7 +113,8 @@ export function ContratosProvider({ children }) {
         getContratos,
         deleteContrato,
         getContrato,
-        updateContrato
+        updateContrato,
+        generarDocumento
       }}
     >
       {children}
