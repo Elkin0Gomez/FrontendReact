@@ -21,7 +21,7 @@ const AppHeaderDropdown = () => {
   const { logout, user } = useAuth();
   return (
     <CDropdown variant="nav-item">
-      <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
+      <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>      
         <CAvatar src={avatar8} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">

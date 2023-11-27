@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import * as XLSX from "xlsx";
 import { Link } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import {
   CContainer,
   CRow,
@@ -52,13 +52,13 @@ function ListaContratos() {
   };
 
   const filteredContratos = Array.isArray(contratos)
-  ? contratos.filter(
-      (contrato) =>
-        contrato.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        contrato.apellido.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        contrato.documento.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  : [];
+    ? contratos.filter(
+        (contrato) =>
+          contrato.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          contrato.apellido.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          contrato.documento.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -95,31 +95,31 @@ function ListaContratos() {
       <CRow className="justify-content-center">
         <CCol>
           <h3 className="text-center">CONTRATOS CREADOS</h3>
-          <div className="d-flex justify-content-center m-3">
-            <Link to={"/crearContrato"}>
-              <CButton color="success">
-                <i className="fas fa-circle-plus"></i> Crear Contrato
+          <div className="d-flex justify-content-between align-items-center m-3">
+            <div className="d-flex">
+              <CButton
+                color="primary"
+                className="m-1"
+                type="button"
+                onClick={exportToExcel}
+              >
+                <FontAwesomeIcon icon={faDownload} /> Exportar Excel
               </CButton>
-            </Link>
-          </div>
-          <div className="col-4 d-flex m-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Buscar..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <div className="col-4 d-flex m-3">
-            <CButton
-              color="primary"
-              className="m-1"
-              type="button"
-              onClick={exportToExcel}
-            >
-              Exportar excel
-            </CButton>
+              <Link to={"/crearContrato"}>
+                <CButton color="success" className="m-1">
+                  <i className="fas fa-circle-plus"></i> Crear Contrato
+                </CButton>
+              </Link>
+            </div>
+            <div className="ml-auto">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Buscar..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
           </div>
           <div className="table-responsive">
             <CTable bordered striped hover className="m-3">
